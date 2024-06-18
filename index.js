@@ -2,6 +2,7 @@ import express from "express";
 import ProductsRouter from "./src/routes/products.routes.js";
 import UsersRouter from './src/routes/users.routes.js'
 import BuyRouter from './src/routes/buy.routes.js'
+import MongoConnection from "./src/models/DAO/mongoConnection.js";
 
 
 const app = express();
@@ -13,6 +14,8 @@ app.use(express.urlencoded({ extended: true })); //req.params
 app.use("/", new ProductsRouter().start());
 app.use("/", new UsersRouter().start())
 app.use("/", new BuyRouter().start())
+
+await MongoConnection.connect()
 
 app.listen(PORT, () => console.log(`Server listening on: ${PORT}`));
 app.on("error", (error) => console.log(`ERROR: ${error}`));
