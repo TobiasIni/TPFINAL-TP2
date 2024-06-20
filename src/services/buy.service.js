@@ -1,25 +1,36 @@
 import ModelFactory from "../models/DAO/Factory.js";
 import config from "../../config.js";
-import buyModel from '../models/buy.models.js'
+import BuyModel from '../models/buy.model.js'
 
 class BuyServices {
-    constructor() {
-      this.model = new buyModel();
-    }
-  
-    getBuy = async () => {
-      const buy = await this.model.getBuy();
-      return buy;
-    };
-
-    newBuy = async (newBuy) => {
-      const buy = await this.model.newBuy(newBuy);
-      return buy;
-    };
-     editBuy = async (id, data) => {
-        const buy = await model.editBuy(id, data)
-        return buy
-    }
+  constructor() {
+    this.model = new BuyModel();
   }
-  
-  export default BuyServices;
+
+  getBuy = async () => {
+    const buy = await this.model.getBuy();
+    return buy;
+  };
+
+  getBuyById = async (id) => {
+    const buy = await this.model.getBuyById(id);
+    return buy;
+  };
+
+  newBuy = async (userId, newBuy) => {
+    const buy = await this.model.newBuy(userId, newBuy);
+    return buy;
+  };
+
+  editBuy = async (id, data) => {
+    const buy = await this.model.editBuy(id, data)
+    return buy
+  }
+
+  deleteBuy = async (id) => {
+    const buy = await this.model.deleteBuy(id)
+    return buy
+  }
+}
+
+export default BuyServices;
