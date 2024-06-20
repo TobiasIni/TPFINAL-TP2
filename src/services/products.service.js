@@ -10,14 +10,24 @@ class ProductsServices {
     return products;
   };
 
+  getProductsById = async (id) => {
+    const products = await this.model.getProductsById(id);
+    return products;
+  };
+
   newProduct = async (prod) => {
     const product = await this.model.newProduct(prod);
     return product;
   };
 
   editProduct = async (id, data) => {
-    const buy = await model.editProduct(id, data)
-    return buy
+    const product = await this.model.editProduct(id, data)
+    return product
+  };
+
+  deleteProduct = async (id, data) => {
+    const product = await this.model.deleteProduct(id)
+    return product
   }
 }
   

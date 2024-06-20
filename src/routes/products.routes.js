@@ -9,8 +9,10 @@ class Router {
   
     start() {
       this.router.get("/products", this.controller.getProducts);
-      this.router.get("/products/:id", this.controller.getProductsId);
+      this.router.get("/products/:id", this.controller.getProductId);
       this.router.post("/products", this.controller.newProduct);
+      this.router.put("/products/:id", this.controller.editProduct);
+      this.router.delete("/products/:id", this.controller.deleteProducts);
 
       return this.router;
     }

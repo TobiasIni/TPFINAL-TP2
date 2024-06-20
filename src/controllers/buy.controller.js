@@ -11,7 +11,7 @@ class BuyController {
   };
 
   getBuyById = async (req, res) => {
-    const { id } = req.params
+    const { id } = req.params;
     const buy = await this.services.getBuyById(id);
     res.send(buy);
   };
@@ -33,20 +33,20 @@ class BuyController {
 
   editBuy = async (req, res) => {
     try {
-      const { id } = req.params
-      const editBuy = req.body
-      const buy = await this.services.editBuy(id, editBuy)
-      res.send(buy)
+      const { id } = req.params;
+      const editBuy = req.body;
+      const buy = await this.services.editBuy(id, editBuy);
+      res.send(buy);
     } catch (error) {
       res.status(error.statusCode || 500).json({ Error: error.message });
     }
   }
 
   deleteBuy = async (req, res) => {
-    const { id } = req.params
-    const buy = await this.services.deleteBuy(id)
-    res.send(buy)
-}
+    const { id } = req.params;
+    const buy = await this.services.deleteBuy(id);
+    res.send(buy);
+  }
 }
 
 export default BuyController;
