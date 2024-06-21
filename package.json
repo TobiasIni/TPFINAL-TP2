@@ -7,14 +7,20 @@
   "scripts": {
     "start": "node .",
     "watch": "node --watch .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha src/test/products.test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^5.1.1",
     "express": "^4.19.2",
     "joi": "^17.13.3",
-    "mongodb": "^6.7.0"
+    "mocha": "^10.4.0",
+    "mongodb": "^6.7.0",
+    "supertest": "^7.0.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1"
   }
 }
