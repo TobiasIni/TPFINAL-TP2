@@ -40,18 +40,19 @@ class ProductsModel {
     };
 
     newProduct = async (prod) => {
+      prod.id = this.products.length + 1
       //Valido con el esquema de productos
       const { error } = newProductSchema.validate(prod);
       if (error) {
         throw {statusCode: 400, message: error.details[0].message};
       }
-      
-      prod.id = this.products.length + 1
+
       await this.products.push(prod);
       return prod;
     };
 
     editProduct = async (id, data) =>{
+      data.id = id;
       //Valido con el esquema de edit
       const { error } = editProductSchema.validate(data);
       if (error) {
@@ -63,7 +64,6 @@ class ProductsModel {
         throw {statusCode: 404, message: 'Producto inexistente.'};
       }
       // Hago el update
-      data.id = id;
       this.products[index] = { ...this.products[index], ...data };
       return this.products[index];
     };
