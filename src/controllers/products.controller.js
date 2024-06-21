@@ -12,7 +12,8 @@ class ProductsController {
   
     getProductId = async (req, res) => {
       const { id } = req.params;
-      const product = await this.services.getProductsById(id);
+      const idValido = this.validateId(id);
+      const product = await this.services.getProductsById(idValido);
       res.send(product);
     };
 
@@ -33,8 +34,9 @@ class ProductsController {
     editProduct = async (req, res) => {
       try {
         const { id } = req.params;
+        const idValido = this.validateId(id);
         const editProduct = req.body;
-        const product = await this.services.editProduct(id, editProduct);
+        const product = await this.services.editProduct(idValido, editProduct);
         res.send(product);
       } catch (error) {
         res.status(error.statusCode || 500).json({ Error: error.message });
@@ -44,12 +46,21 @@ class ProductsController {
     deleteProducts = async (req, res) => {
       try{
         const { id } = req.params;
-        const product = await this.services.deleteProduct(id);
+        const idValido = this.validateId(id);
+        const product = await this.services.deleteProduct(idValido);
         res.send(product);
       } catch (error) {
       res.status(error.statusCode || 500).json({ Error: error.message });
     }
-    }
+    };
+
+    validateId = (id) => {
+      const parsedId = parseInt(id, 10);
+      if (!isNaN(parsedId) && parsedId > 0) {
+        return parsedId;
+      }
+      throw {statusCode: 404, message: 'Proporcione un id de producto valido.'};
+    };
 }
   
 export default ProductsController;

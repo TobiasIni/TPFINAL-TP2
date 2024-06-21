@@ -1,3 +1,5 @@
+import { newProductSchema, editProductSchema } from "../schemas/product.schema.js";
+
 class ProductsModel {
     constructor() {
       this.products = [
@@ -38,17 +40,30 @@ class ProductsModel {
     };
 
     newProduct = async (prod) => {
-      const data = await this.products.push(prod);
+      //Valido con el esquema de productos
+      const { error } = newProductSchema.validate(prod);
+      if (error) {
+        throw {statusCode: 400, message: error.details[0].message};
+      }
+      
+      prod.id = this.products.length + 1
+      await this.products.push(prod);
       return prod;
     };
 
     editProduct = async (id, data) =>{
+      //Valido con el esquema de edit
+      const { error } = editProductSchema.validate(data);
+      if (error) {
+        throw {statusCode: 400, message: error.details[0].message};
+      }
       // Valido que el producto exista
       const index = this.products.findIndex((prod) => prod.id == id);
       if (index === -1) {
-        return { status: 404, message: "El producto no existe." };
+        throw {statusCode: 404, message: 'Producto inexistente.'};
       }
       // Hago el update
+      data.id = id;
       this.products[index] = { ...this.products[index], ...data };
       return this.products[index];
     };
@@ -57,7 +72,7 @@ class ProductsModel {
       //Valido que el producto exista
       const product = await this.getProductsById(id);
       if (!product) {
-        throw {statusCode: 404, message: 'Producto inexistente.'};;
+        throw {statusCode: 404, message: 'Producto inexistente.'};
       }
       //Hago el delete
       const index = this.products.findIndex((prod) => prod.id === id);
