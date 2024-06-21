@@ -27,7 +27,7 @@ class BuyController {
       res.send(data);
       
     } catch (error) {
-      res.status(error.statusCode || 500).json({ Error: error.message });
+      res.status(error.statusCode || 500).json({ EstadoCompra: error.message });
     }
   };
 

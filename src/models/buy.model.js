@@ -1,4 +1,4 @@
-import ProductServices from '../services/products.service.js'
+import productServices from '../services/products.service.js'
 import { newBuySchema, editBuySchema } from '../schemas/buy.schema.js';
 
 class BuyModel {
@@ -56,7 +56,6 @@ class BuyModel {
     }
 
     //Uso el servicio de productos para traerme el catalogo
-    const productServices = new ProductServices();
     const catalog = await productServices.getProducts();
 
     //Comienzo a armar la compra y validar si el stock alcanza para ralizar la compra y actualizar el stock
@@ -68,10 +67,6 @@ class BuyModel {
     };
 
     for (const item of buy.compra){
-      // ######################################################################################################################
-      // ##### Por el momento siempre va a responder que no existe el producto porque la respuesta de GET/products es [] ######
-      // ######################################################################################################################
-
       //Obtengo el producto para validar si existe y si el stock alcanza.
       const product = catalog.find(catalogProduct => catalogProduct.id == item.productId);
       if (!product){

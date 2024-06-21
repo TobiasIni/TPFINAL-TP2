@@ -43,16 +43,14 @@ class ProductsModel {
     };
 
     editProduct = async (id, data) =>{
-      //Valido que el producto exista
-      const product = await this.getProductsById(id);
-      if (!product) {
+      // Valido que el producto exista
+      const index = this.products.findIndex((prod) => prod.id == id);
+      if (index === -1) {
         return { status: 404, message: "El producto no existe." };
       }
-      //Hago el update
-      data.id = id;
-      const index = this.products.findIndex((prod) => prod.id == id);
-      this.products.splice(index, 1, data);
-      return data;
+      // Hago el update
+      this.products[index] = { ...this.products[index], ...data };
+      return this.products[index];
     };
 
     deleteProduct = async (id) => {

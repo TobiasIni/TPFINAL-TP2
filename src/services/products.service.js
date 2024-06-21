@@ -2,7 +2,14 @@ import ProductsModel from "../models/products.model.js";
 
 class ProductsServices {
   constructor() {
+    if(ProductsServices.instance){
+      return ProductsServices.instance;
+    }
+
     this.model = new ProductsModel();
+    ProductsServices.instance = this;
+
+    return this;
   }
 
   getProducts = async () => {
@@ -30,5 +37,8 @@ class ProductsServices {
     return product
   }
 }
+
+const instance = new ProductsServices();
+Object.freeze(instance);
   
-export default ProductsServices;
+export default instance;
