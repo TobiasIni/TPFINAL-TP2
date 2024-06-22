@@ -1,4 +1,4 @@
-import ProductsModel from "../models/DAO/productsMongo.model.js";
+import ProductsModel from "../models/products.model.js"
 
 class ProductsServices {
   constructor() {
