@@ -10,19 +10,23 @@ class UsersController {
       res.send(users);
     };
 
+    getUserById = async (req,res) => {
+      const {id} = req.params
+      const user = await this.services.getUserById(id);
+      res.send(user)
+    }
+
     newUser = async (req, res) => {
       try {
         const user = req.body
         //Podemos tener una capa gruesa de validaciones en el controlador
-        if(typeof(user) === "object"){
-          const data = await this.services.newUser(user);
-          res.send(data);
-        }
+        const data = await this.services.newUser(user)
+      res.send(data)
       } catch (error) {
-        res.send({ statusCode: 401, message: "No está autorizado." });
+        res.status(error.statusCode || 500).json({Error: error.message})
       }
-
       };
+      
        editUsers = async (req, res) => {
         const { id } = req.params
         const editUsers = req.body

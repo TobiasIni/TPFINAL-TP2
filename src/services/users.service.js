@@ -1,6 +1,6 @@
 import ModelFactory from "../models/DAO/Factory.js";
 import config from "../../config.js";
-import usersModel from '../models/users.model.js'
+import usersModel from '../models/DAO/usersMongoModel.js'
 
 class UserServices {
     constructor() {
@@ -20,6 +20,11 @@ class UserServices {
         const user = await model.editUsers(id, data)
         return user
     }
+    getUserById = async (id) => {
+      const user = await this.model.getUsersById(id);
+      return user;
+    };
+    
   }
   
   export default UserServices;
