@@ -37,6 +37,7 @@ export const newProductSchema = Joi.object({
 });
 
 export const editProductSchema = Joi.object({
+    _id: Joi.any(),
     id: Joi.number().integer().greater(0).required().messages({
         'number.base': `"id" debe ser un número`,
         'number.integer': `"id" debe ser un número entero`,

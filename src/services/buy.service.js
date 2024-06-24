@@ -1,6 +1,4 @@
-import ModelFactory from "../models/DAO/Factory.js";
-import config from "../../config.js";
-import BuyModel from '../models/buy.model.js'
+import BuyModel from '../models/DAO/buyMongo.model.js'
 
 class BuyServices {
   constructor() {

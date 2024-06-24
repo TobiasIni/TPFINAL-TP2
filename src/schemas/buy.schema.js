@@ -21,6 +21,7 @@ export const newBuySchema = Joi.object({
 });
 
 export const editBuySchema = Joi.object({
+    _id: Joi.any(),
     id: Joi.number().required().messages({
         'number.base': `"id" debe ser un número`,
         'any.required': `"id" es requerido`
