@@ -9,7 +9,11 @@ class UsersModelMongoDB {
     getUsers = async () => {
       //Uso del metodo Find() para encontrar los datos de products
       const users = await MongoConnection.db.collection("users").find({}).toArray()
-      //lista de productos
+
+      users.forEach(user => {
+        delete user._id;
+      });
+
       return users;
     };
   
@@ -18,7 +22,7 @@ class UsersModelMongoDB {
       //busco un producto por id
       const newUser = users.find((element)=>element.id ==id)
       
-      return newUser || "producto inexistente."
+      return newUser || "Usuario inexistente."
     };
 
     newUser = async (user) => {
