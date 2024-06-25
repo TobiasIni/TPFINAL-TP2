@@ -46,29 +46,38 @@ class UsersModelMongoDB {
     };
 
     editUsers = async (id, data) => {
-      //Me aseguro que sea un int
-      const intId = parseInt(id, 10);
-      data.id = intId;
-
-      //Valido usando el esquema
-      const { error } = editUserSchema.validate(data);
-      if (error) {
+      try {
+        // Me aseguro que sea un int
+        const intId = parseInt(id, 10);
+        data.id = intId;
+    
+        // Valido usando el esquema
+        const { error } = editUserSchema.validate(data);
+        if (error) {
           const errorMessage = error.details.map(detail => detail.message).join(', ');
           throw { statusCode: 400, message: `Error en el modelo del usuario: ${errorMessage}` };
+        }
+    
+        // Busco un elemento por id y le cargo nuevos datos y lo actualizo
+        const result = await MongoConnection.db.collection('usuarios').findOneAndUpdate(
+          { id: intId },
+          { $set: data },
+          { returnDocument: 'after' }
+        );
+    
+        // Valido que el usuario exista
+        if (!result || !result.value) {
+          throw { statusCode: 404, message: 'Usuario inexistente.' };
+        }
+    
+        delete result.value._id;
+        return result.value;
+      } catch (err) {
+        // Lanza el error para que sea manejado por el controlador
+        throw err;
       }
-      //Busco un elemento por id y le cargo nuevos datos y lo actualizo 
-      const updatedUser = await MongoConnection.db.collection(this.myCollection).findOneAndUpdate(
-        { id: intId },
-        {$set: data},
-        { returnDocument: 'after' }
-      );
-      // Valido que el producto exista
-      if (!updatedUser) {
-        throw { statusCode: 404, message: 'Usuario inexistente.' };
-      }
-      delete updatedUser._id
-      return updatedUser;
-    }
+    };
+    
 
    deleteUser = async (userId) => {
       //Me aseguro que sea un int

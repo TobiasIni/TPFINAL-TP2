@@ -28,11 +28,16 @@ class UsersController {
       }
     };
 
-    editUsers = async (req, res) => {
-      const { id } = req.params
-      const editUsers = req.body
-      const user = await this.services.editUsers(id, editUsers)
-      res.send(user)
+     editUsers = async (req, res) => {
+      const { id } = req.params;
+      const editUsersData = req.body;
+    
+      try {
+        const user = await this.services.editUsers(id, editUsersData);
+        res.status(200).send(user);
+      } catch (err) {
+        res.status(err.statusCode || 500).json({ error: err.message || 'Error interno del servidor' });
+      }
     };
 
     login = (req, res) => {
@@ -48,9 +53,13 @@ class UsersController {
 
     deleteUsers = async (req, res) => {
       const { id } = req.params;
-      const buy = await this.services.deleteUser(id);
-      res.send(buy);
-    }
+      try {
+        const user = await this.services.deleteUser(id);
+        res.status(200).send(user);
+      } catch (err) {
+        res.status(err.statusCode || 500).json({ error: err.message || 'Error interno del servidor' });
+      }
+    };
 }
 
 export default UsersController;
