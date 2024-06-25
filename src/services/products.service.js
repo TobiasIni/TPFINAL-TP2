@@ -1,4 +1,4 @@
-import ProductsModel from "../models/products.model.js"
+import ProductsModel from "../models/DAO/productsMongo.model.js"
 
 class ProductsServices {
   constructor() {
@@ -32,7 +32,7 @@ class ProductsServices {
     return product
   };
 
-  deleteProduct = async (id, data) => {
+  deleteProduct = async (id) => {
     const product = await this.model.deleteProduct(id)
     return product
   }

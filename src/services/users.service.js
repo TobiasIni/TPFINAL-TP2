@@ -1,5 +1,3 @@
-import ModelFactory from "../models/DAO/Factory.js";
-import config from "../../config.js";
 import usersModel from '../models/DAO/usersMongoModel.js'
 
 class UserServices {
@@ -16,13 +14,20 @@ class UserServices {
       const users = await this.model.newUser(user);
       return users;
     };
-     editUsers = async (id, data) => {
-        const user = await model.editUsers(id, data)
-        return user
-    }
+
+    editUsers = async (id, data) => {
+      const user = await this.model.editUsers(id, data)
+      return user
+    };
+
     getUserById = async (id) => {
       const user = await this.model.getUsersById(id);
       return user;
+    };
+
+    deleteUser = async (id) => {
+      const buy = await this.model.deleteUser(id)
+      return buy
     };
     
   }
