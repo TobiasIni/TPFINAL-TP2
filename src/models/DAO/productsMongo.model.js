@@ -33,6 +33,8 @@ class ProductsModelMongoDB {
 
     editProduct = async (id, data) => {
       const products = await MongoConnection.db.collection("products").find({}).toArray()
+      //Elimino _id para poder editar
+      delete data._id;
       //Busco un elemento por id y le cargo nuevos datos y lo actualizo 
       const updatedProduct = await MongoConnection.db.collection("products").findOneAndUpdate({ id: id }, {$set: data}, { returnOriginal: false });
       // Valido que el producto exista

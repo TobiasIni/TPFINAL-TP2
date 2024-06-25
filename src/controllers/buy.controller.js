@@ -22,8 +22,9 @@ class BuyController {
       const token = req.headers['authtoken'];
       //TODO: Agregar la validacion de roles llamando al user.Constrolelrs para que valide si el token
       // pertenece a algun usuario valido y si tiene permisos de usar este metodo
+      const { moneda, ciudad, envio } = req.query;
 
-      const data = await this.services.newBuy(token, buy);
+      const data = await this.services.newBuy(token, buy, moneda, ciudad, envio === 'true');
       res.send(data);
       
     } catch (error) {

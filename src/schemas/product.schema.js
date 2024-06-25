@@ -65,10 +65,10 @@ export const editProductSchema = Joi.object({
         'number.greater': `"price" debe ser mayor a 0`,
         'any.required': `"price" es requerido`
     }),
-    stock: Joi.number().integer().greater(0).required().messages({
+    stock: Joi.number().integer().greater(-1).required().messages({
         'number.base': `"stock" debe ser un número entero`,
         'number.integer': `"stock" debe ser un número entero`,
-        'number.greater': `"stock" debe ser mayor a 0`,
+        'number.greater': `"stock" debe ser 0 o mayor`,
         'any.required': `"stock" es requerido`
     })
 });

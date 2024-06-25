@@ -15,8 +15,8 @@ class BuyServices {
     return buy;
   };
 
-  newBuy = async (userId, newBuy) => {
-    const buy = await this.model.newBuy(userId, newBuy);
+  newBuy = async (userId, newBuy, moneda, ciudad, envio) => {
+    const buy = await this.model.newBuy(userId, newBuy, moneda, ciudad, envio);
     return buy;
   };
 

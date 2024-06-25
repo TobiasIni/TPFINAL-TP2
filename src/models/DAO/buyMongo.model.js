@@ -1,6 +1,8 @@
 import MongoConnection from "../DAO/mongoConnection.js";
 import productServices from '../../services/products.service.js';
 import { newBuySchema, editBuySchema } from '../../schemas/buy.schema.js';
+import getRainProbability from '../../services/weather.service.js';
+import getExchangeRate from "../../services/currency.service.js";
 
 class ProductsModelMongoDB {
     constructor() {
@@ -23,12 +25,21 @@ class ProductsModelMongoDB {
         return buy || "Compra inexistente!";
     };
 
-    newBuy = async (userId, buy) => {
+    newBuy = async (userId, buy, moneda = 'USD', ciudad = '', envio = false) => {
         //Valido usando el esquema
         const { error } = newBuySchema.validate(buy);
         if (error) {
             const errorMessage = error.details.map(detail => detail.message).join(', ');
             throw { statusCode: 400, message: `Error en el modelo de dato de la compra: ${errorMessage}` };
+        }
+
+        //Consulto el clima. Si las probabilidades son mas del 50%, el costo de envío es de 10% sobre el total
+        var recargoPorClima = false;
+        if (envio && ciudad) {
+            const rainProbability = await getRainProbability(ciudad);
+            if (rainProbability > 0.5) {
+                recargoPorClima = true;
+            }
         }
 
         //Uso el servicio de productos para traerme el catalogo
@@ -38,12 +49,20 @@ class ProductsModelMongoDB {
         const buys = await this.getBuy();
         const buyId = buys.length + 1;
 
+        //Hago la conversion de moneda
+        var exchangeRate = 1;
+        if (moneda !== 'USD') {
+            exchangeRate = await getExchangeRate(moneda);
+        }
+
         //Comienzo a armar la compra y validar si el stock alcanza para ralizar la compra y actualizar el stock
         let valorTotal = 0;
         const newBuy = {
         id: buyId,
         userId: userId,
-        products: []
+        products: [],
+        envio: false,
+        currency: moneda
         };
 
         for (const item of buy.compra){
@@ -64,7 +83,7 @@ class ProductsModelMongoDB {
             const itemCompra = {
               productId: product.id,
               cant: item.cant,
-              subTotal: item.cant * product.price
+              subTotal: item.cant * product.price * exchangeRate
             }
       
             //Acumulo el total
@@ -72,7 +91,14 @@ class ProductsModelMongoDB {
             //Agrego al array de productos de la compra
             newBuy.products.push(itemCompra);
         }
+
+        //Cargo el costo extra por el clima
+        if (recargoPorClima){
+            valorTotal *= 1.10;
+            newBuy.envio = true;
+        }
       
+        newBuy.currency = moneda;
         newBuy.total = valorTotal;
 
         //Persisto la compra en mongo

@@ -48,6 +48,15 @@ export const editBuySchema = Joi.object({
         'array.min': `"products" debe contener al menos un elemento`,
         'any.required': `"products" es requerido`
     }),
+    envio: Joi.bool().required().messages({
+        'number.base': `"envio" debe ser un booleano`,
+        'any.required': `"envio" es requerido`
+    }),
+    currency: Joi.string().max(5).required().messages({
+        'string.base': `"currency" debe ser un texto`,
+        'string.max': `"currency" no puede tener más de 5 caracteres`,
+        'any.required': `"currency" es requerido`
+    }),
     total: Joi.number().required().messages({
         'number.base': `"total" debe ser un número`,
         'any.required': `"total" es requerido`
